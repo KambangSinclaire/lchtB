@@ -34,7 +34,7 @@ export class RegistrationController {
                     HandleRegistrationErrors.registrationErrorReporterMiddleware(error, req, res, next);
                 } else {
                     //generate token
-                    tokenGenerator.addUserToken(req.body.businessCategory, user, req, res, next)
+                    tokenGenerator.addBusinessClientToken(user, req, res, next)
                 }
             });
             return;
@@ -55,7 +55,7 @@ export class RegistrationController {
                     HandleRegistrationErrors.registrationErrorReporterMiddleware(error, req, res, next);
                 } else {
                     //generate token
-                    tokenGenerator.addUserToken(req.body.academicLevel, user, req, res, next)
+                    tokenGenerator.addStudentToken(user, req, res, next)
                 }
             });
             return;
@@ -76,7 +76,7 @@ export class RegistrationController {
                     HandleRegistrationErrors.registrationErrorReporterMiddleware(error, req, res, next);
                 } else {
                     //generate token
-                    tokenGenerator.addUserToken(req.body.developmentField, user, req, res, next)
+                    tokenGenerator.addDeveloperToken(user, req, res, next)
                 }
             });
             return;

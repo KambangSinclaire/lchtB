@@ -1,4 +1,6 @@
 import * as httpStatus from "http-status-codes";
+
+import { RegKeys } from "../Request Validation/Keys/AuthRegKeys.key";
 export const TokenMessageReporter = {
 
 
@@ -9,7 +11,6 @@ export const TokenMessageReporter = {
             errorMessage: error.message,
             status: httpStatus.EXPECTATION_FAILED
         });
-        next();
     },
 
     tokenGenerationSuccess: function (user: any, token: any, req: any, res: any, next: any) {
@@ -47,5 +48,57 @@ export const TokenMessageReporter = {
                 next();
             }
         }
+    },
+
+    invalidTokenLength: function (token: any, res: any, next: any) {
+        res.json({
+            success: false,
+            message: `Invalid token length. Expected at least ${RegKeys.MIN_TOKEN_LENGTH} or at most ${RegKeys.MAX_TOKEN_LENGTH} but got ${token.length}`,
+            value: token,
+            status: httpStatus.BAD_REQUEST
+        });
+    },
+    nullTokenValue: function (res: any, next: any) {
+        res.json({
+            success: false,
+            message: `Token not provided. It cannot be null`,
+            status: httpStatus.BAD_REQUEST
+        });
+    },
+    invalidTokenType: function (token: any, res: any, next: any) {
+        res.json({
+            success: false,
+            message: `Token has invalid type. Please verify the token type`,
+            value: token,
+            status: httpStatus.BAD_REQUEST
+        });
+    },
+    invalidTokenSent: function (token: any, res: any, next: any) {
+        res.json({
+            success: false,
+            message: `Invalid token sent. This Token could not be verified`,
+            value: token,
+            status: httpStatus.BAD_REQUEST
+        });
     }
+
 }
+
+
+
+// let decodedStudentToken = jwt.verify(token, RegKeys.SECRET_STUDENT);
+        // if (!decodedStudentToken) {
+        //     let decodedBusinessClientToken = jwt.verify(token, RegKeys.SECRET_BUSINESS);
+        //     if (!decodedBusinessClientToken) {
+        //         let decodedDeveloperToken = jwt.verify(token, RegKeys.SECRET_DEVELOPER);
+        //         if (!decodedDeveloperToken) {
+        //             TokenMessageReporter.invalidTokenSent(token, res, next);
+        //         } else {
+        //             next();
+        //         }
+        //     } else {
+        //         next();
+        //     }
+        // } else {
+        //     next();
+

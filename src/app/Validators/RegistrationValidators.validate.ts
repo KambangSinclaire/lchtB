@@ -249,7 +249,7 @@ export class RegistrationAndAuthenticationValidator {
 
 
 
-    public verifyAndValidateCompulsoryFields(req: any, res: any) {
+    public verifyAndValidateCompulsoryFields(req: any, res: any): boolean {
         if (!this.nameExistenceChecker(req.body.username)) {
             HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.nullUsername(req.body.username), req.body.username);
         } else {
@@ -274,92 +274,93 @@ export class RegistrationAndAuthenticationValidator {
                                 HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidPasswordLength(req.body.password), req.body.password);
                             }
                             else {
-                                return;
+                                return true;
                             }
                         }
                     }
                 }
             }
         }
+        return true;
     }
 
 
     public verifyAndValidateRegistrationRequest(req: any, res: any, next: any) {
 
-        this.verifyAndValidateCompulsoryFields(req, res);
+        if (this.verifyAndValidateCompulsoryFields(req, res)) {
 
-        if (req.body.academicLevel != undefined) {
+            if (req.body.academicLevel != undefined) {
 
-            if (!this.academicLevelExistenceChecker(req.body.academicLevel)) {
-                HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.nullAcademicLevel(req.body.academicLevel), req.body.academicLevel);
-            } else {
-                if (!this.academicLevelTypeChecker(req.body.academicLevel)) {
-                    HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidAcademicLevelType(req.body.academicLevel), req.body.academicLevel);
+
+                if (!this.academicLevelExistenceChecker(req.body.academicLevel)) {
+                    HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.nullAcademicLevel(req.body.academicLevel), req.body.academicLevel);
                 } else {
-                    if (!this.academicLevelLengthChecker(req.body.academicLevel)) {
-                        HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidAcademicLevelLength(req.body.academicLevel), req.body.academicLevel);
+                    if (!this.academicLevelTypeChecker(req.body.academicLevel)) {
+                        HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidAcademicLevelType(req.body.academicLevel), req.body.academicLevel);
                     } else {
-                        if (this.validateOptionalEmailField(req, res) || !this.validateOptionalEmailField(req, res)) {
-                            if (this.validateOptionalPhoneNumberField(req, res) || !this.validateOptionalPhoneNumberField(req, res)) {
-                                //register here
-                                next();
-                            }
-                        }
-
-                    }
-                }
-            }
-        } else {
-            if (req.body.businessCategory != undefined) {
-                if (!this.businessCategoryExistenceChecker(req.body.businessCategory)) {
-                    HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.nullBusinessCategory(req.body.businessCategory), req.body.businessCategory);
-                } else {
-                    if (!this.businessCategoryTypeChecker(req.body.businessCategory)) {
-                        HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidBusinessCategoryType(req.body.businessCategory), req.body.businessCategory);
-                    } else {
-                        if (!this.businessCategoryLengthChecker(req.body.businessCategory)) {
-                            HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidBusinessCategoryLength(req.body.businessCategory), req.body.businessCategory);
+                        if (!this.academicLevelLengthChecker(req.body.academicLevel)) {
+                            HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidAcademicLevelLength(req.body.academicLevel), req.body.academicLevel);
                         } else {
-                            if (this.validateOptionalPhoneNumberField(req, res)) {
-                                next();
-
-                            } else {
-                                //Verify this again
-                                if (this.validateOptionalEmailField(req, res) || !this.validateOptionalEmailField(req, res))
+                            if (this.validateOptionalEmailField(req, res) || !this.validateOptionalEmailField(req, res)) {
+                                if (this.validateOptionalPhoneNumberField(req, res) || !this.validateOptionalPhoneNumberField(req, res)) {
                                     //register here
                                     next();
+                                }
                             }
+
                         }
                     }
                 }
-            }
-            else {
-                if (req.body.developmentField != undefined) {
-
-                    if (!this.developmentFieldExistenceChecker(req.body.developmentField)) {
-                        HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.nullDevelopmentField(req.body.developmentField), req.body.developmentField);
+            } else {
+                if (req.body.businessCategory != undefined) {
+                    if (!this.businessCategoryExistenceChecker(req.body.businessCategory)) {
+                        HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.nullBusinessCategory(req.body.businessCategory), req.body.businessCategory);
                     } else {
-                        if (!this.developmentFieldTypeChecker(req.body.developmentField)) {
-                            HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidDevelopmentFieldType(req.body.developmentField), req.body.developmentField);
+                        if (!this.businessCategoryTypeChecker(req.body.businessCategory)) {
+                            HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidBusinessCategoryType(req.body.businessCategory), req.body.businessCategory);
                         } else {
-                            if (!this.developmentFieldLengthChecker(req.body.developmentField)) {
-                                HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidDevelopmentFieldLength(req.body.developmentField), req.body.developmentField);
+                            if (!this.businessCategoryLengthChecker(req.body.businessCategory)) {
+                                HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidBusinessCategoryLength(req.body.businessCategory), req.body.businessCategory);
                             } else {
-                                if (this.validateOptionalEmailField(req, res) && this.validateOptionalPhoneNumberField(req, res)) {
+                                if (this.validateOptionalPhoneNumberField(req, res)) {
                                     next();
-                                } else {
-                                    console.log("Error occurred");
 
+                                } else {
+                                    //Verify this again
+                                    if (this.validateOptionalEmailField(req, res) || !this.validateOptionalEmailField(req, res))
+                                        //register here
+                                        next();
                                 }
                             }
                         }
                     }
                 }
                 else {
-                    HandleRegistrationErrors.badFormatedRequest(res, next);
+                    if (req.body.developmentField != undefined) {
 
+                        if (!this.developmentFieldExistenceChecker(req.body.developmentField)) {
+                            HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.nullDevelopmentField(req.body.developmentField), req.body.developmentField);
+                        } else {
+                            if (!this.developmentFieldTypeChecker(req.body.developmentField)) {
+                                HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidDevelopmentFieldType(req.body.developmentField), req.body.developmentField);
+                            } else {
+                                if (!this.developmentFieldLengthChecker(req.body.developmentField)) {
+                                    HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidDevelopmentFieldLength(req.body.developmentField), req.body.developmentField);
+                                } else {
+                                    if (this.validateOptionalEmailField(req, res) && this.validateOptionalPhoneNumberField(req, res)) {
+                                        next();
+                                    } else {
+                                        console.log("Error occurred");
+
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        HandleRegistrationErrors.badFormatedRequest(res, next);
+
+                    }
                 }
-
             }
         }
 

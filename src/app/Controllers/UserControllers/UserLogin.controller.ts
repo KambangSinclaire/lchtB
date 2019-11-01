@@ -12,6 +12,10 @@ export class LoginController {
 
     public authenticateUser(req: Request, res: Response, next: any) {
         const username = req.body.username;
+        console.log(username);
+        console.log(req.body.tokenId.data.tokenId);
+        console.log("That is it up there");
+
 
         students.findOne({ username: username }, (error, user) => {
             if (error) {
