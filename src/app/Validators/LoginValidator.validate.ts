@@ -1,5 +1,7 @@
 import * as jwt from "jsonwebtoken";
 
+import * as httpStatus from "http-status-codes";
+
 import { RegistrationErrors } from "../Constants/RegistrationErrorMessages";
 import { TokenMessageReporter } from "../Middlewares/Custom/Error Handling/TokenMessages";
 import { HandleRegistrationErrors } from "../Middlewares/Custom/Error Handling/RegistrationError.middleware";
@@ -82,6 +84,19 @@ export class LoginRequestValidator {
                     this.verifyToken(token, req, res, next);
                 }
             }
+        }
+    }
+
+
+    public preLoginCheck(tokenUsername: string, requestBodyUsername: string, res: any) {
+        if (tokenUsername === requestBodyUsername) {
+            return true;
+        } else {
+            res.json({
+                success: false,
+                message: `Invalid username sent. Username doesn't exist. Make sure you correctly spelt the username`,
+                status: httpStatus.BAD_REQUEST
+            });
         }
     }
 
