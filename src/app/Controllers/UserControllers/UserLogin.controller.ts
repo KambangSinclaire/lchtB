@@ -15,17 +15,17 @@ export class LoginController {
 
 
     public authenticateUser(req: Request, res: Response, next: any) {
+
         const username = req.body.username;
-        console.log(username);
-        console.log(req.body.tokenId.data.tokenId);
-        console.log("That is it up there");
+
+        console.log("Reached Login controller");
 
         if (req.body.tokenId.data.tokenId === "student") {
             students.findOne({ username: username }, (error, user) => {
                 if (error) {
                     HandleLoginErrors.loginErrorReporterMiddleware(error, req, res, next);
                 } else {
-                    res.json(user);
+                    HandleLoginErrors.invalidLoginUsername(user, req, res);
                 }
             });
             return;
@@ -35,7 +35,7 @@ export class LoginController {
                     if (error) {
                         HandleLoginErrors.loginErrorReporterMiddleware(error, req, res, next);
                     } else {
-                        res.json(user);
+                        HandleLoginErrors.invalidLoginUsername(user, req, res);
                     }
                 });
                 return;
@@ -45,7 +45,7 @@ export class LoginController {
                         if (error) {
                             HandleLoginErrors.loginErrorReporterMiddleware(error, req, res, next);
                         } else {
-                            res.json(user);
+                            HandleLoginErrors.invalidLoginUsername(user, req, res);
                         }
                     });
                     return;

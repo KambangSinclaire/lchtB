@@ -1,6 +1,7 @@
 
 import mongoose from "mongoose";
 
+import { PasswordHandler } from "../../Validators/PasswordHandler.validate";
 import { HandleRegistrationErrors } from "../../Middlewares/Custom/Error Handling/RegistrationError.middleware";
 import { AuthToken } from "../../Middlewares/Custom/Request Validation/Request Authentication/AddTokenForAuth.middleware";
 import { BusinessOwnerRegModel } from "../../Models/UserModels/BusinessOwnerReg.model";
@@ -24,7 +25,7 @@ export class RegistrationController {
         if (req.body.businessCategory) {
             const user = [{
                 username: req.body.username,
-                password: req.body.password,
+                password: new PasswordHandler().encryptPassword(req.body.password),
                 email: req.body.email,
                 businessCategory: req.body.businessCategory,
                 phone: req.body.phone
@@ -45,7 +46,7 @@ export class RegistrationController {
         if (req.body.academicLevel) {
             const user = [{
                 username: req.body.username,
-                password: req.body.password,
+                password: new PasswordHandler().encryptPassword(req.body.password),
                 email: req.body.email,
                 academicLevel: req.body.academicLevel,
                 phone: req.body.phone
@@ -66,7 +67,7 @@ export class RegistrationController {
         if (req.body.developmentField) {
             const user = [{
                 username: req.body.username,
-                password: req.body.password,
+                password: new PasswordHandler().encryptPassword(req.body.password),
                 email: req.body.email,
                 developmentField: req.body.developmentField,
                 phone: req.body.phone
