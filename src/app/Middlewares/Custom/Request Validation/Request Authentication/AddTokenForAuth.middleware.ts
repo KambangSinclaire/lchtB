@@ -1,7 +1,7 @@
 import * as jwt from "jsonwebtoken";
 
-import { RegKeys } from "../Keys/AuthRegKeys.key";
 import { TokenMessageReporter } from "../../Error Handling/TokenMessages";
+import { RegKeys } from "../Keys/AuthRegKeys.key";
 export class AuthToken {
 
     public addStudentToken(user: any, req: any, res: any, next: any) {
@@ -11,7 +11,7 @@ export class AuthToken {
             tokenId: "student"
         }
         //sign or generate new token 
-        jwt.sign({ data: data }, RegKeys.SECRET_STUDENT, { expiresIn: "5mins" }, (error, token) => {
+        jwt.sign({ data: data }, RegKeys.SECRET_STUDENT, { expiresIn: RegKeys.TOKEN_EXPIRY }, (error, token) => {
             if (error) {
                 TokenMessageReporter.tokenGenerationError(error, req, res, next);
             } else {
@@ -27,7 +27,7 @@ export class AuthToken {
             tokenId: "businessClient"
         }
         //sign or generate new token 
-        jwt.sign({ data: data }, RegKeys.SECRET_BUSINESS, { expiresIn: "5mins" }, (error, token) => {
+        jwt.sign({ data: data }, RegKeys.SECRET_BUSINESS, { expiresIn: RegKeys.TOKEN_EXPIRY }, (error, token) => {
             if (error) {
                 TokenMessageReporter.tokenGenerationError(error, req, res, next);
             } else {
@@ -43,7 +43,7 @@ export class AuthToken {
             tokenId: "developer"
         }
         //sign or generate new token 
-        jwt.sign({ data: data }, RegKeys.SECRET_DEVELOPER, { expiresIn: "5mins" }, (error, token) => {
+        jwt.sign({ data: data }, RegKeys.SECRET_DEVELOPER, { expiresIn: RegKeys.TOKEN_EXPIRY }, (error, token) => {
             if (error) {
                 TokenMessageReporter.tokenGenerationError(error, req, res, next);
             } else {

@@ -50,21 +50,16 @@ export class LoginRequestValidator {
                             if (error) {
                                 TokenMessageReporter.invalidTokenSent(decoded3Token, res, next);
                             } else {
-                                console.log("Developer 3");
-                                console.log(decoded3Token);
+                                req.body.tokenId = decoded3Token;
                                 next();
-
                             }
                         });
                     } else {
-                        console.log("business 2");
-                        console.log(decoded2Token);
+                        req.body.tokenId = decoded2Token;
                         next();
                     }
                 });
             } else {
-                // console.log("student first");
-                // console.log(decoded1Token);
                 req.body.tokenId = decoded1Token;
                 next();
             }
