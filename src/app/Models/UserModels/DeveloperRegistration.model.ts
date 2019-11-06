@@ -1,4 +1,5 @@
 import * as Mongoose from "mongoose";
+
 import { ValidFieldLengths } from "../../Constants/UserInputLengths";
 
 export const DeveloperRegModel = new Mongoose.Schema({
@@ -36,5 +37,9 @@ export const DeveloperRegModel = new Mongoose.Schema({
 
     profilePicture: {
         type: String,
+    },
+    status: {
+        type: Boolean,
+        default: false
     }
 });

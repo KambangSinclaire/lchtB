@@ -11,7 +11,6 @@ export class RegistrationAndAuthenticationRoutes {
 
 
     constructor(private app: express.Application) {
-
     }
 
     public userRegistration() {
@@ -35,10 +34,14 @@ export class RegistrationAndAuthenticationRoutes {
         this.app.route('/api/user/login').post(validateLoginRequest, loginController.authenticateUser);
     }
 
+
+
     public homeRoute() {
         this.app.route('/').get((req, res) => {
             res.sendFile(path.join(__dirname + '/../../../../build/public/index.html'));
         })
     }
+
+
 
 }

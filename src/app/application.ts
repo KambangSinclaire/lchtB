@@ -10,9 +10,7 @@ class Application {
 
     private app: express.Application;
 
-    // mongodb+srv://SinclaireKambang:heisdearjesus71996@liachatapp-m5ccb.mongodb.net/test?retryWrites=true&w=majority
-    // private databaseUrl: string = "mongodb://localhost:27017/liachat";
-    private databaseUrl: string = `mongodb+srv://SinclaireKambang:heisdearjesus71996@liachatapp-m5ccb.mongodb.net/test?retryWrites=true&w=majority`;
+    private databaseUrl: string = `mongodb+srv://SinclaireKambang:heisdearjesus71996@liachatapp-m5ccb.mongodb.net/liachatDb?retryWrites=true&w=majority`;
 
 
     constructor() {

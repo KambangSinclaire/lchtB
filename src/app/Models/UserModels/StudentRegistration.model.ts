@@ -21,12 +21,20 @@ export const StudentRegModel = new mongoose.Schema({
         type: String,
         minlength: ValidFieldLengths.MIN_EMAIL_LENGTH,
         maxlength: ValidFieldLengths.MAX_EMAIL_LENGTH,
-        unique: true
+        unique: true,
+        default: function () {
+            let defaultNum = 0;
+            return defaultNum++;
+        }
     },
     phone: {
         type: Number,
         minlength: ValidFieldLengths.MIN_PHONE_LENGTH,
-        maxlength: ValidFieldLengths.MAX_PHONE_LENGTH
+        maxlength: ValidFieldLengths.MAX_PHONE_LENGTH,
+        default: function () {
+            let defaultNum = 0;
+            return defaultNum++;
+        }
     },
     academicLevel: {
         type: String,
@@ -37,5 +45,9 @@ export const StudentRegModel = new mongoose.Schema({
 
     profilePicture: {
         type: String,
+    },
+    status: {
+        type: Boolean,
+        default: false
     }
 });

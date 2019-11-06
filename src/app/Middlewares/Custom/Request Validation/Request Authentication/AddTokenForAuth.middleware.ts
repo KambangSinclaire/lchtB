@@ -4,6 +4,8 @@ import { TokenMessageReporter } from "../../Error Handling/TokenMessages";
 import { RegKeys } from "../Keys/AuthRegKeys.key";
 export class AuthToken {
 
+
+
     public addStudentToken(user: any, req: any, res: any, next: any) {
         const data: object = {
             username: req.body.username,
@@ -11,7 +13,7 @@ export class AuthToken {
             tokenId: "student"
         }
         //sign or generate new token 
-        jwt.sign({ data: data }, RegKeys.SECRET_STUDENT, { expiresIn: RegKeys.TOKEN_EXPIRY }, (error, token) => {
+        jwt.sign({ data }, RegKeys.SECRET_STUDENT, { expiresIn: RegKeys.TOKEN_EXPIRY }, (error, token) => {
             if (error) {
                 TokenMessageReporter.tokenGenerationError(error, req, res, next);
             } else {
@@ -20,6 +22,8 @@ export class AuthToken {
             }
         });
     }
+
+
     public addBusinessClientToken(user: any, req: any, res: any, next: any) {
         const data: object = {
             username: req.body.username,
@@ -27,7 +31,7 @@ export class AuthToken {
             tokenId: "businessClient"
         }
         //sign or generate new token 
-        jwt.sign({ data: data }, RegKeys.SECRET_BUSINESS, { expiresIn: RegKeys.TOKEN_EXPIRY }, (error, token) => {
+        jwt.sign({ data }, RegKeys.SECRET_BUSINESS, { expiresIn: RegKeys.TOKEN_EXPIRY }, (error, token) => {
             if (error) {
                 TokenMessageReporter.tokenGenerationError(error, req, res, next);
             } else {
@@ -36,6 +40,8 @@ export class AuthToken {
             }
         });
     }
+
+
     public addDeveloperToken(user: any, req: any, res: any, next: any) {
         const data: object = {
             username: req.body.username,
@@ -43,7 +49,7 @@ export class AuthToken {
             tokenId: "developer"
         }
         //sign or generate new token 
-        jwt.sign({ data: data }, RegKeys.SECRET_DEVELOPER, { expiresIn: RegKeys.TOKEN_EXPIRY }, (error, token) => {
+        jwt.sign({ data }, RegKeys.SECRET_DEVELOPER, { expiresIn: RegKeys.TOKEN_EXPIRY }, (error, token) => {
             if (error) {
                 TokenMessageReporter.tokenGenerationError(error, req, res, next);
             } else {
