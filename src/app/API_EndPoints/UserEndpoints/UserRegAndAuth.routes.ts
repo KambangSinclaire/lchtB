@@ -21,7 +21,7 @@ export class RegistrationAndAuthenticationRoutes {
             new ValidateUserRequests(req, res, next).validateRegistrationRequest();
         }
 
-        this.app.route('/liachat/api/user/register').post(validateRegistrationRequest, registrationController.registerUser);
+        this.app.route('/api/user/register').post(validateRegistrationRequest, registrationController.registerUser);
     }
 
 
@@ -32,12 +32,12 @@ export class RegistrationAndAuthenticationRoutes {
             new ValidateUserRequests(req, res, next).validateLoginRequest();
         }
 
-        this.app.route('/liachat/api/user/login').post(validateLoginRequest, loginController.authenticateUser);
+        this.app.route('/api/user/login').post(validateLoginRequest, loginController.authenticateUser);
     }
 
     public homeRoute() {
         this.app.route('/').get((req, res) => {
-            res.sendFile(path.join(__dirname + '/../../../public/index.html'));
+            res.sendFile(path.join(__dirname + '/../../../../build/public/index.html'));
         })
     }
 
