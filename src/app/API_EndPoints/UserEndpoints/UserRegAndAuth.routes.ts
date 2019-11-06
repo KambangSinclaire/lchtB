@@ -1,3 +1,5 @@
+import path from "path";
+
 import express from "express";
 
 import { LoginController } from "../../Controllers/UserControllers/UserLogin.controller";
@@ -33,7 +35,10 @@ export class RegistrationAndAuthenticationRoutes {
         this.app.route('/liachat/api/user/login').post(validateLoginRequest, loginController.authenticateUser);
     }
 
-
-
+    public homeRoute() {
+        this.app.route('/').get((req, res) => {
+            res.sendFile(path.join(__dirname + '/../../../public/index.html'));
+        })
+    }
 
 }

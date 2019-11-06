@@ -1,15 +1,18 @@
 import express from "express";
 
-import { RegistrationAndAuthenticationRoutes } from "./API_EndPoints/UserEndpoints/UserRegAndAuth.routes";
 import { DatabaseConfig } from "./Server/database.config";
 import { ServerConfiguration } from "./Server/server.config";
+import { RegistrationAndAuthenticationRoutes } from "./API_EndPoints/UserEndpoints/UserRegAndAuth.routes";
 import { RequiredMiddleWares } from "./Middlewares/Required/RequiredMiddleWares";
 
 
 class Application {
 
     private app: express.Application;
-    private databaseUrl: string = "mongodb://localhost:27017/liachat";
+
+    // mongodb+srv://SinclaireKambang:heisdearjesus71996@liachatapp-m5ccb.mongodb.net/test?retryWrites=true&w=majority
+    // private databaseUrl: string = "mongodb://localhost:27017/liachat";
+    private databaseUrl: string = `mongodb+srv://SinclaireKambang:heisdearjesus71996@liachatapp-m5ccb.mongodb.net/test?retryWrites=true&w=majority`;
 
 
     constructor() {
@@ -30,6 +33,7 @@ class Application {
         // Create instance of the UserRoutes class 
         //and call the methods of the class
         const userRoutes = new RegistrationAndAuthenticationRoutes(app);
+        userRoutes.homeRoute();
         userRoutes.userRegistration();
         userRoutes.userLogin();
 
