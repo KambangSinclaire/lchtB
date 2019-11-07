@@ -28,7 +28,8 @@ export class RegistrationController {
                 password: new PasswordHandler().encryptPassword(req.body.password),
                 email: req.body.email,
                 businessCategory: req.body.businessCategory,
-                phone: req.body.phone
+                phone: req.body.phone,
+                loggedIn_Status: true
             }];
             businessClientModel.create(user, (error, user) => {
                 if (error) {
@@ -71,7 +72,8 @@ export class RegistrationController {
                 password: new PasswordHandler().encryptPassword(req.body.password),
                 email: req.body.email,
                 developmentField: req.body.developmentField,
-                phone: req.body.phone
+                phone: req.body.phone,
+                loggedIn_Status: true
             }];
             developerModel.create(user, (error, user) => {
                 if (error) {

@@ -2,6 +2,8 @@ import path from "path";
 
 import express from "express";
 
+import { LoginRequestValidator } from "../../Validators/LoginValidator.validate";
+import { LogOutController } from "../../Controllers/UserControllers/UserLogOut.controller";
 import { LoginController } from "../../Controllers/UserControllers/UserLogin.controller";
 import { RegistrationController } from "../../Controllers/UserControllers/UserRegistration.controller";
 import { ValidateUserRequests } from "../../Middlewares/Custom/Request Validation/User Registration Request Validation/ValidateUserRequests.middleware";
@@ -26,21 +28,18 @@ export class RegistrationAndAuthenticationRoutes {
 
     public userLogin() {
         let loginController = new LoginController();
-
         let validateLoginRequest = function (req: any, res: any, next: any) {
             new ValidateUserRequests(req, res, next).validateLoginRequest();
         }
-
         this.app.route('/api/user/login').post(validateLoginRequest, loginController.authenticateUser);
     }
+
     public userLogOut() {
-        let loginController = new LoginController();
-
-        let validateLoginRequest = function (req: any, res: any, next: any) {
-            new ValidateUserRequests(req, res, next).validateLoginRequest();
+        let logOutController = new LogOutController();
+        let validateLogOutRequest = function (req: any, res: any, next: any) {
+            new LoginRequestValidator().validateAndVerifyToken(req, res, next);
         }
-
-        this.app.route('/api/user/logOut').post(validateLoginRequest, loginController.authenticateUser);
+        this.app.route('/api/user/logOut').post(validateLogOutRequest, logOutController.logOutUser);
     }
 
 
