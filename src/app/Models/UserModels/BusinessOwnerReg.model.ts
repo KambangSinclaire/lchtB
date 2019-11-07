@@ -24,7 +24,7 @@ export const BusinessOwnerRegModel = new Mongoose.Schema({
         unique: true,
         default: function () {
             let defaultNum = 0;
-            return defaultNum++;
+            return ++defaultNum;
         }
     },
     phone: {
@@ -42,7 +42,7 @@ export const BusinessOwnerRegModel = new Mongoose.Schema({
     profilePicture: {
         type: String,
     },
-    status: {
+    loggedIn_Status: {
         type: Boolean,
         default: false
     }

@@ -118,6 +118,37 @@ export class RegistrationAndAuthenticationValidator {
     /* END OF VALIDATORS FOR PHONE NUMBER FIELD */
 
 
+
+    validateEmailFormat(email: string): boolean {
+        const Expression = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+        if (Expression.test(email)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    validateUsernameFormat(username: string) {
+        const Expression = new RegExp(/^[a-zA-Z0-9]+$/);
+        if (Expression.test(username)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    validatePasswordFormat(password: string) {
+        const Expression = new RegExp(/^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\W]).{5,200}$/);
+        if (Expression.test(password)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
+
     /* VALIDATORS FOR ACADEMIC LEVEL FIELD */
     public academicLevelLengthChecker(academicLevel: string): boolean {
         if (academicLevel.length < ValidFieldLengths.MIN_ACADEMIC_CATEGORY_LENGTH || academicLevel.length > ValidFieldLengths.MAX_ACADEMIC_CATEGORY_LENGTH) {
@@ -197,7 +228,6 @@ export class RegistrationAndAuthenticationValidator {
     /* END OF VALIDATORS FOR DEVELOPMENT FIELD */
 
 
-
     //Implementing validation for phone number
     public validateOptionalPhoneNumberField(req: any, res: any): boolean {
 
@@ -238,7 +268,13 @@ export class RegistrationAndAuthenticationValidator {
                     if (!this.emailLengthChecker(req.body.email)) {
                         HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidEmailLength(req.body.email), req.body.email);
                     } else {
-                        return true;
+                        if (!this.validateEmailFormat(req.body.email)) {
+                            console.log('passed in format ckecker');
+                            HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidEmailFormat(req.body.email), req.body.email);
+
+                        } else {
+                            return true;
+                        }
                     }
                 }
             }
@@ -252,36 +288,50 @@ export class RegistrationAndAuthenticationValidator {
     public verifyAndValidateCompulsoryFields(req: any, res: any): boolean {
         if (!this.nameExistenceChecker(req.body.username)) {
             HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.nullUsername(req.body.username), req.body.username);
+            return false;
         } else {
             if (!this.nameTypeChecker(req.body.username)) {
                 HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidUsernameType(req.body.username), req.body.username);
+                return false;
 
             } else {
                 if (!this.nameLengthChecker(req.body.username)) {
                     HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidUsernameLength(req.body.username), req.body.username);
+                    return false;
                 } else {
-
-                    if (!this.passwordExistenceChecker(req.body.password)) {
-                        HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.nullPassword(req.body.password), req.body.password);
-
+                    if (!this.validateUsernameFormat(req.body.username)) {
+                        HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidUsernameFormat(req.body.username), req.body.username);
+                        return false;
                     } else {
+                        if (!this.passwordExistenceChecker(req.body.password)) {
+                            HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.nullPassword(req.body.password), req.body.password);
+                            return false;
 
-                        if (!this.passwordTypeChecker(req.body.password)) {
-                            HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidPasswordType(req.body.password), req.body.password)
-                        }
-                        else {
-                            if (!this.passwordLengthChecker(req.body.password)) {
-                                HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidPasswordLength(req.body.password), req.body.password);
+                        } else {
+
+                            if (!this.passwordTypeChecker(req.body.password)) {
+                                HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidPasswordType(req.body.password), req.body.password)
+                                return false;
                             }
                             else {
-                                return true;
+                                if (!this.passwordLengthChecker(req.body.password)) {
+                                    HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidPasswordLength(req.body.password), req.body.password);
+                                    return false;
+                                }
+                                else {
+                                    if (!this.validatePasswordFormat(req.body.password)) {
+                                        HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidPasswordFormat(req.body.password), req.body.password);
+                                        return false;
+                                    } else {
+                                        return true;
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
         }
-        return true;
     }
 
 
@@ -290,7 +340,6 @@ export class RegistrationAndAuthenticationValidator {
         if (this.verifyAndValidateCompulsoryFields(req, res)) {
 
             if (req.body.academicLevel != undefined) {
-
 
                 if (!this.academicLevelExistenceChecker(req.body.academicLevel)) {
                     HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.nullAcademicLevel(req.body.academicLevel), req.body.academicLevel);

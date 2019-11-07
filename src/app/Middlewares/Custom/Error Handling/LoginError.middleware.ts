@@ -10,8 +10,11 @@ export const HandleLoginErrors = {
             message: error.message,
             status: httpStatus.BAD_REQUEST
         });
-        next();
+        // next();
     },
+
+
+
     loginValidatorErrorReporterMiddleware: function (res: any, message: any, errorField?: any) {
         res.json({
             success: false,
@@ -20,7 +23,10 @@ export const HandleLoginErrors = {
             value: errorField
         });
     },
-    invalidLoginUsername: function (user: any,req:any, res: any) {
+
+
+
+    verifyLoggedInUsername: function (user: any, userModel: any, req: any, res: any) {
         if (user == null) {
             res.json({
                 success: false,
@@ -28,26 +34,43 @@ export const HandleLoginErrors = {
                 status: httpStatus.BAD_REQUEST
             });
         } else {
-           this.invalidLoginPassword(user,req,res);
+            this.verifyLoggedInPassword(user, userModel, req, res);
         }
     },
-    invalidLoginPassword: function (user: any,req:any, res: any) {
+
+
+
+    verifyLoggedInPassword: function (user: any, userModel: any, req: any, res: any) {
         const passwordHandler = new PasswordHandler();
-        if(passwordHandler.decryptAndComparePasswords(req.body.password,user.password)){
-            res.json({
-                success: true,
-                message: `User was successfully authenticated`,
-                status: httpStatus.OK,
-                user
+        if (passwordHandler.decryptAndComparePasswords(req.body.password, user.password)) {
+            //Set the user logged in as true in
+            userModel.findOneAndUpdate({ username: req.body.username }, { loggedIn_Status: true }, (error: any, authUser: any) => {
+                if (error) {
+                    res.json({
+                        success: false,
+                        message: `User logged-in status could not be set`,
+                        status: httpStatus.EXPECTATION_FAILED
+                    });
+                } else {
+                    res.json({
+                        success: true,
+                        message: `User was successfully authenticated`,
+                        status: httpStatus.OK,
+                        user: authUser
+                    });
+                }
             });
-        }else{
+        } else {
             res.json({
                 success: false,
                 message: `Invalid Password sent. User password doesn't match. Make sure you entered the password correctly`,
                 status: httpStatus.BAD_REQUEST
             });
         }
-     },
+    },
+
+
+
     badFormatedRequest: function (res: any, next: any) {
         res.json({
             success: false,
@@ -55,6 +78,8 @@ export const HandleLoginErrors = {
             message: `User Category field is not defined.Expected academicLevel or businessCategory or development field but got Undefined`,
         });
     },
+
+
 
 }
 

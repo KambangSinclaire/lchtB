@@ -38,7 +38,7 @@ export const DeveloperRegModel = new Mongoose.Schema({
     profilePicture: {
         type: String,
     },
-    status: {
+    loggedIn_Status: {
         type: Boolean,
         default: false
     }

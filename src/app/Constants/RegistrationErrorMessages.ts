@@ -12,6 +12,9 @@ export const RegistrationErrors = {
     nullUsername: function (username: string): string {
         return `The username field cannot be Null.Expected a String but instead got ${typeof username}`;
     },
+    invalidUsernameFormat: function (username: string): string {
+        return `The username value is not well formated`;
+    },
 
 
     invalidPasswordLength: function (password: string): string {
@@ -23,6 +26,9 @@ export const RegistrationErrors = {
     nullPassword: function (password: string): string {
         return `The password field cannot be Null.Expected a String but instead got ${typeof password}`;
     },
+    invalidPasswordFormat: function (password: string): string {
+        return `The Password value is not well formated`;
+    },
 
 
     invalidEmailLength: function (email: string): string {
@@ -33,6 +39,9 @@ export const RegistrationErrors = {
     },
     nullEmail: function (email: string): string {
         return `The email field cannot be Null.Expected a String but instead got ${typeof email}`;
+    },
+    invalidEmailFormat: function (email: string): string {
+        return `The Email value is not well formated`;
     },
 
 

@@ -33,6 +33,15 @@ export class RegistrationAndAuthenticationRoutes {
 
         this.app.route('/api/user/login').post(validateLoginRequest, loginController.authenticateUser);
     }
+    public userLogOut() {
+        let loginController = new LoginController();
+
+        let validateLoginRequest = function (req: any, res: any, next: any) {
+            new ValidateUserRequests(req, res, next).validateLoginRequest();
+        }
+
+        this.app.route('/api/user/logOut').post(validateLoginRequest, loginController.authenticateUser);
+    }
 
 
 

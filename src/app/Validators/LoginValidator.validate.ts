@@ -102,37 +102,42 @@ export class LoginRequestValidator {
 
 
     public verifyAndValidateFields(req: any, res: any, next: any) {
-        if (!this.requiredLoginFields.nameExistenceChecker(req.body.username)) {
-            HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.nullUsername(req.body.username), req.body.username);
-        } else {
-            if (!this.requiredLoginFields.nameTypeChecker(req.body.username)) {
-                HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidUsernameType(req.body.username), req.body.username);
 
-            } else {
-                if (!this.requiredLoginFields.nameLengthChecker(req.body.username)) {
-                    HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidUsernameLength(req.body.username), req.body.username);
-                } else {
-
-                    if (!this.requiredLoginFields.passwordExistenceChecker(req.body.password)) {
-                        HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.nullPassword(req.body.password), req.body.password);
-
-                    } else {
-
-                        if (!this.requiredLoginFields.passwordTypeChecker(req.body.password)) {
-                            HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidPasswordType(req.body.password), req.body.password)
-                        }
-                        else {
-                            if (!this.requiredLoginFields.passwordLengthChecker(req.body.password)) {
-                                HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidPasswordLength(req.body.password), req.body.password);
-                            }
-                            else {
-                                this.validateAndVerifyToken(req, res, next);
-                            }
-                        }
-                    }
-                }
-            }
+        if (this.requiredLoginFields.verifyAndValidateCompulsoryFields(req, res)) {
+            this.validateAndVerifyToken(req, res, next);
         }
+
+        // if (!this.requiredLoginFields.nameExistenceChecker(req.body.username)) {
+        //     HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.nullUsername(req.body.username), req.body.username);
+        // } else {
+        //     if (!this.requiredLoginFields.nameTypeChecker(req.body.username)) {
+        //         HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidUsernameType(req.body.username), req.body.username);
+
+        //     } else {
+        //         if (!this.requiredLoginFields.nameLengthChecker(req.body.username)) {
+        //             HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidUsernameLength(req.body.username), req.body.username);
+        //         } else {
+
+        //             if (!this.requiredLoginFields.passwordExistenceChecker(req.body.password)) {
+        //                 HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.nullPassword(req.body.password), req.body.password);
+
+        //             } else {
+
+        //                 if (!this.requiredLoginFields.passwordTypeChecker(req.body.password)) {
+        //                     HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidPasswordType(req.body.password), req.body.password)
+        //                 }
+        //                 else {
+        //                     if (!this.requiredLoginFields.passwordLengthChecker(req.body.password)) {
+        //                         HandleRegistrationErrors.requestErrorReporterMiddleware(res, RegistrationErrors.invalidPasswordLength(req.body.password), req.body.password);
+        //                     }
+        //                     else {
+        //                         this.validateAndVerifyToken(req, res, next);
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
     }
 
 }

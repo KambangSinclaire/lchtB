@@ -23,31 +23,31 @@ export class LoginController {
             const username = req.body.tokenId.data.username;
 
             if (req.body.tokenId.data.tokenId === "student") {
-                students.findOne({ username: username }, (error, user) => {
+                students.findOne({ username }, (error, user) => {
                     if (error) {
                         HandleLoginErrors.loginErrorReporterMiddleware(error, req, res, next);
                     } else {
-                        HandleLoginErrors.invalidLoginUsername(user, req, res);
+                        HandleLoginErrors.verifyLoggedInUsername(user, students, req, res);
                     }
                 });
                 return;
             } else {
                 if (req.body.tokenId.data.tokenId === "businessClient") {
-                    businessClient.findOne({ username: username }, (error, user) => {
+                    businessClient.findOne({ username }, (error, user) => {
                         if (error) {
                             HandleLoginErrors.loginErrorReporterMiddleware(error, req, res, next);
                         } else {
-                            HandleLoginErrors.invalidLoginUsername(user, req, res);
+                            HandleLoginErrors.verifyLoggedInUsername(user, businessClient, req, res);
                         }
                     });
                     return;
                 } else {
                     if (req.body.tokenId.data.tokenId === "developer") {
-                        developer.findOne({ username: username }, (error, user) => {
+                        developer.findOne({ username }, (error, user) => {
                             if (error) {
                                 HandleLoginErrors.loginErrorReporterMiddleware(error, req, res, next);
                             } else {
-                                HandleLoginErrors.invalidLoginUsername(user, req, res);
+                                HandleLoginErrors.verifyLoggedInUsername(user, developer, req, res);
                             }
                         });
                         return;

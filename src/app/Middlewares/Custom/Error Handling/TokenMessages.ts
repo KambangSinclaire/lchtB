@@ -21,8 +21,7 @@ export const TokenMessageReporter = {
                 errorMessage: null,
                 status: httpStatus.OK,
                 registeredStudent: user,
-                token: token,
-                TOKEN_LEN: token.length
+                token: token
             });
             next();
         } else {
@@ -55,14 +54,14 @@ export const TokenMessageReporter = {
             success: false,
             message: `Invalid token length. Expected at least ${RegKeys.MIN_TOKEN_LENGTH} or at most ${RegKeys.MAX_TOKEN_LENGTH} but got ${token.length}`,
             value: token,
-            status: httpStatus.BAD_REQUEST
+            status: httpStatus.UNAUTHORIZED
         });
     },
     nullTokenValue: function (res: any, next: any) {
         res.json({
             success: false,
             message: `Token not provided. It cannot be null`,
-            status: httpStatus.BAD_REQUEST
+            status: httpStatus.UNAUTHORIZED
         });
     },
     invalidTokenType: function (token: any, res: any, next: any) {
@@ -70,7 +69,7 @@ export const TokenMessageReporter = {
             success: false,
             message: `Token has invalid type. Please verify the token type`,
             value: token,
-            status: httpStatus.BAD_REQUEST
+            status: httpStatus.UNAUTHORIZED
         });
     },
     invalidTokenSent: function (token: any, res: any, next: any) {
@@ -78,7 +77,7 @@ export const TokenMessageReporter = {
             success: false,
             message: `Invalid token sent. This Token could not be verified`,
             value: token,
-            status: httpStatus.BAD_REQUEST
+            status: httpStatus.UNAUTHORIZED
         });
     }
 
