@@ -49,7 +49,8 @@ export class RegistrationController {
                 password: new PasswordHandler().encryptPassword(req.body.password),
                 email: req.body.email,
                 academicLevel: req.body.academicLevel,
-                phone: req.body.phone
+                phone: req.body.phone,
+                loggedIn_Status: true
             }];
             studentRegistrationModel.create(user, (error, user) => {
                 if (error) {
