@@ -17,11 +17,9 @@ export class RegistrationAndAuthenticationRoutes {
 
     public userRegistration() {
         let registrationController = new RegistrationController();
-
         let validateRegistrationRequest = function (req: any, res: any, next: any) {
             new ValidateUserRequests(req, res, next).validateRegistrationRequest();
         }
-
         this.app.route('/api/user/register').post(validateRegistrationRequest, registrationController.registerUser);
     }
 
@@ -41,7 +39,6 @@ export class RegistrationAndAuthenticationRoutes {
         }
         this.app.route('/api/user/logOut').post(validateLogOutRequest, logOutController.logOutUser);
     }
-
 
 
     public homeRoute() {

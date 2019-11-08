@@ -4,8 +4,6 @@ import mongoose from "mongoose";
 
 import * as httpStatus from 'http-status-codes';
 
-import { LoginRequestValidator } from "../../Validators/LoginValidator.validate";
-import { HandleLoginErrors } from "../../Middlewares/Custom/Error Handling/LoginError.middleware";
 import { BusinessOwnerRegModel } from "../../Models/UserModels/BusinessOwnerReg.model";
 import { DeveloperRegModel } from "../../Models/UserModels/DeveloperRegistration.model";
 import { StudentRegModel } from "../../Models/UserModels/StudentRegistration.model";
@@ -17,12 +15,12 @@ const developer = mongoose.model("developers", DeveloperRegModel);
 export class LogOutController {
 
 
-    public logOutUser(req: Request, res: Response, next: any) {
+    public logOutUser(req: Request, res: Response) {
 
         const username = req.body.tokenId.data.username;
 
         if (req.body.tokenId.data.tokenId === "student") {
-            students.findOneAndUpdate({ username }, { loggedIn_Status: false }, (error: any, user: any) => {
+            students.findOneAndUpdate({ username }, { loggedIn_Status: false }, (error: any) => {
                 if (error) {
                     res.json({
                         success: false,
@@ -41,7 +39,7 @@ export class LogOutController {
             return;
         } else {
             if (req.body.tokenId.data.tokenId === "businessClient") {
-                businessClient.findOneAndUpdate({ username }, { loggedIn_Status: false }, (error: any, user: any) => {
+                businessClient.findOneAndUpdate({ username }, { loggedIn_Status: false }, (error: any) => {
                     if (error) {
                         res.json({
                             success: false,
@@ -60,7 +58,7 @@ export class LogOutController {
                 return;
             } else {
                 if (req.body.tokenId.data.tokenId === "developer") {
-                    developer.findOneAndUpdate({ username }, { loggedIn_Status: false }, (error: any, user: any) => {
+                    developer.findOneAndUpdate({ username }, { loggedIn_Status: false }, (error: any) => {
                         if (error) {
                             res.json({
                                 success: false,

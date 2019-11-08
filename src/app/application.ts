@@ -10,8 +10,8 @@ class Application {
 
     private app: express.Application;
 
-    // private databaseUrl: string = `mongodb+srv://SinclaireKambang:heisdearjesus71996@liachatapp-m5ccb.mongodb.net/liachatDb?retryWrites=true&w=majority`;
-    private databaseUrl: string = `mongodb://localhost:27017/liachat`;
+    private databaseUrl: string = `mongodb+srv://SinclaireKambang:heisdearjesus71996@liachatapp-m5ccb.mongodb.net/liachatDb?retryWrites=true&w=majority`;
+    // private databaseUrl: string = `mongodb://localhost:27017/liachat`;
 
     constructor() {
         this.app = express();
@@ -21,7 +21,7 @@ class Application {
     private startApp(app: express.Application): void {
 
 
-        // Create instance of the middleware class 
+        //Create instance of the middleware class 
         //and call the setMiddleware method of the class
         const middleWares = new RequiredMiddleWares(app);
         middleWares.setRequiredMiddleWares();
