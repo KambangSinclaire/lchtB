@@ -1,5 +1,5 @@
 
-import { LoginRequestValidator } from "../../../../Validators/LoginValidator.validate";
+import { AuthRequestValidator } from "../../../../Validators/AuthRequestValidator.validate";
 import { RegistrationAndAuthenticationValidator } from "../../../../Validators/RegistrationValidators.validate";
 
 export class ValidateUserRequests {
@@ -19,7 +19,7 @@ export class ValidateUserRequests {
     }
 
     public validateLoginRequest() {
-        new LoginRequestValidator().verifyAndValidateFields(this.req, this.res, this.next);
+        new AuthRequestValidator().verifyAndValidateFields(this.req, this.res, this.next);
         return;
     }
 

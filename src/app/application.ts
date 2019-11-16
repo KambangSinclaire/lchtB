@@ -2,7 +2,10 @@ import express from "express";
 
 import { DatabaseConfig } from "./Server/database.config";
 import { ServerConfiguration } from "./Server/server.config";
+import { UserApplicationRoutes } from "./API_EndPoints/UserEndpoints/UserApplication.routes";
 import { RegistrationAndAuthenticationRoutes } from "./API_EndPoints/UserEndpoints/UserRegAndAuth.routes";
+import { GroupChats } from "./ChatSockets/GroupChats/groups.chat";
+import { PrivateChats } from "./ChatSockets/PrivateChats/private.chat";
 import { RequiredMiddleWares } from "./Middlewares/Required/RequiredMiddleWares";
 
 
@@ -10,8 +13,8 @@ class Application {
 
     private app: express.Application;
 
-    private databaseUrl: string = `mongodb+srv://SinclaireKambang:heisdearjesus71996@liachatapp-m5ccb.mongodb.net/liachatDb?retryWrites=true&w=majority`;
-    // private databaseUrl: string = `mongodb://localhost:27017/liachat`;
+    // private databaseUrl: string = `mongodb+srv://SinclaireKambang:heisdearjesus71996@liachatapp-m5ccb.mongodb.net/liachatDb?retryWrites=true&w=majority`;
+    private databaseUrl: string = `mongodb://localhost:27017/liachat`;
 
     constructor() {
         this.app = express();
@@ -31,10 +34,12 @@ class Application {
         // Create instance of the UserRoutes class 
         //and call the methods of the class
         const userRoutes = new RegistrationAndAuthenticationRoutes(app);
+        const userAppRoutes = new UserApplicationRoutes(app);
         userRoutes.homeRoute();
         userRoutes.userRegistration();
         userRoutes.userLogin();
         userRoutes.userLogOut();
+        userAppRoutes.getAllLoggedUsers();
 
 
 
@@ -49,8 +54,13 @@ class Application {
 
         // Create instance of the server configuration class 
         //and call the setUpServer method of the class
-        const serverConfiguration = new ServerConfiguration(app);
-        serverConfiguration.setUpServer();
+        const serverConfiguration = new ServerConfiguration(app).setUpServer();
+
+
+        //Import Socket.io implementation
+        const chats = new GroupChats();
+        chats.studentCommunity(serverConfiguration);
+        new PrivateChats().devCommunity(serverConfiguration);
 
     }
 }

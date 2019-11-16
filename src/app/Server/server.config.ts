@@ -1,5 +1,6 @@
 import express from "express";
 
+
 export class ServerConfiguration {
 
 
@@ -9,10 +10,11 @@ export class ServerConfiguration {
 
     }
 
-    public setUpServer(): void {
-        this.app.listen(this.port, () => {
+    public setUpServer(): any {
+        const server = this.app.listen(this.port, () => {
             console.log(`Server started on port ${this.port}`);
-        })
+        });
+        return server;
     }
 
 

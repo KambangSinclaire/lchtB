@@ -2,7 +2,7 @@ import path from "path";
 
 import express from "express";
 
-import { LoginRequestValidator } from "../../Validators/LoginValidator.validate";
+import { AuthRequestValidator } from "../../Validators/AuthRequestValidator.validate";
 import { LogOutController } from "../../Controllers/UserControllers/UserLogOut.controller";
 import { LoginController } from "../../Controllers/UserControllers/UserLogin.controller";
 import { RegistrationController } from "../../Controllers/UserControllers/UserRegistration.controller";
@@ -35,7 +35,7 @@ export class RegistrationAndAuthenticationRoutes {
     public userLogOut() {
         let logOutController = new LogOutController();
         let validateLogOutRequest = function (req: any, res: any, next: any) {
-            new LoginRequestValidator().validateAndVerifyToken(req, res, next);
+            new AuthRequestValidator().validateAndVerifyToken(req, res, next);
         }
         this.app.route('/api/user/logOut').post(validateLogOutRequest, logOutController.logOutUser);
     }
@@ -44,7 +44,7 @@ export class RegistrationAndAuthenticationRoutes {
     public homeRoute() {
         this.app.route('/').get((req, res) => {
             res.sendFile(path.join(__dirname + '/../../../../build/public/index.html'));
-        })
+        });
     }
 
 
